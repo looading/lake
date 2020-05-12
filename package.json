@@ -1,7 +1,7 @@
 {
-  "name": "hexo-site",
+  "name": "lake",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
@@ -9,7 +9,7 @@
     "server": "hexo server"
   },
   "hexo": {
-    "version": ""
+    "version": "4.2.0"
   },
   "dependencies": {
     "hexo": "^4.0.0",
@@ -21,5 +21,9 @@
     "hexo-renderer-stylus": "^1.1.0",
     "hexo-renderer-marked": "^2.0.0",
     "hexo-server": "^1.0.0"
+  },
+  "author": "qisang",
+  "devDependencies": {
+    "hexo-deployer-git": "^2.1.0"
   }
 }
