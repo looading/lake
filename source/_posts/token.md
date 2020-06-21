@@ -107,13 +107,13 @@ console.log(utoken.next()) // 1
 console.log(utoken) // 1
 ```
 
-功能是实现了， 但是运行时间过长，数值不断的变大，某一时刻肯定会超过 `Number.MAX_SAFE_INTEGER`， 在之后就会出现重复值。 这个 UToken 就会失效。
+功能是实现了， 但是运行时间过长，数值不断的变大，某一时刻肯定会超过 `Number.MAX_SAFE_INTEGER`， 此时 `Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 将得到 true的结果，而这在数学上是错误的` 。 这个 UToken 就会失效。
 这就跟大数计算（收精度限制）碰到的问题一样一样的。
 
 #### 如何解决精度限制问题
 将 number 拆分为数组存储，然后运算时递增，数组每一个单位值不超过 `Number.MAX_SAFE_INTEGER`，输出是将数组拼接成字符串输出
 
-在本文中，我们会以链表的方式实现。
+在本文中，我们会以链表的方式实现。链表的每一个节点的值均已进制数表示， 比如说本文所使用的表示52进制
 链表的每一个节点记录了当前节点的值，上级一节点/下一节点的引用，以及相关方法
 
 ```typescript
