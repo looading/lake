@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    如何简单的创建一个 Unique Token | lake
+  </title>
+  <meta name="description" content="bug 收集池">
+  
+  <meta name="keywords" content="
+  Javascript Typescrpt
+  ">
+  
+  <meta name="author" content="qisang">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="/imgs/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="/font-awesome-4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="/imgs/avatar.jpeg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 1 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 1 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 1 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">lake</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    qisang
+
+    <span class="post-date float-right" title="{{moment(1592659337000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      
+          <i class="fa fa-pencil-square-o"></i>
+      
+      {{moment(1592659337000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>如何简单的创建一个 Unique Token</h1>
+    <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在一个长连接的通信过程中，双方的通信不能一对一问答方式进行。<br>如下例： server 接收到链接建立的时间后立即发送了两个消息给 client, client 收到 service 发送的消息后立马回复了信息。<br>然后 server 接收到了这个信息， 但是它并不知道这个信息是 client 针对方才发送的消息的回复。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server</span></span><br><span class="line">server.onConnection(<span class="function">(<span class="params">connection</span>) =&gt;</span> &#123;</span><br><span class="line">  connection.sendMessage(&#123;</span><br><span class="line">    data: <span class="string">'hello'</span></span><br><span class="line">  &#125;)</span><br><span class="line">  connection.sendMessage(&#123;</span><br><span class="line">    data: <span class="string">'你的状态好么？'</span></span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">connection.onMessage(<span class="function"><span class="params">message</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'你是针对哪个消息的回复？'</span>, messgae)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// client </span></span><br><span class="line"><span class="keyword">const</span> connection = client.connect()</span><br><span class="line"></span><br><span class="line">connection.onMessage(<span class="function">(<span class="params">message</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(message.data === <span class="string">'hello) &#123;</span></span><br><span class="line"><span class="string">    conection.sendMessage(&#123;</span></span><br><span class="line"><span class="string">      data: '</span>i <span class="keyword">get</span> it<span class="string">'</span></span><br><span class="line"><span class="string">    &#125;)</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">  if(message.data === '</span>你的状态好么？) &#123;</span><br><span class="line">    conection.sendMessage(&#123;</span><br><span class="line">      data: <span class="string">'还不错'</span></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>针对这样的情况我们应该怎么办呢？</p>
+<ul>
+<li>给发送的每个消息添加一个唯一的 Token 作为一个唯一标识</li>
+<li>一方收到消息后， 回复时将接收到的 Token 发送回去</li>
+<li>发送放收到回复后根据收到的 id 来判断这个回复是针对哪一个消息的</li>
+</ul>
+<p>那么问题来了，我们需要创一个 Token, 这个 Token 什么样的才比较合适？</p>
+<ul>
+<li>唯一性（最重要的）</li>
+</ul>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><ol>
+<li>使用 uuid</li>
+<li>给一个 id = 0 自增</li>
+</ol>
+<h3 id="uuid-有什么优劣"><a href="#uuid-有什么优劣" class="headerlink" title="uuid 有什么优劣"></a>uuid 有什么优劣</h3><p>优： 能保证全局的唯一性</p>
+<p>劣：</p>
+<ul>
+<li>字符串占用空间大</li>
+<li>生成的 id 很随机，不易读</li>
+<li>做不了递增，不太能做到排序。revert 一个消息的时候很难通过 uuid 做到</li>
+</ul>
+<h3 id="自增-id-有什么优劣"><a href="#自增-id-有什么优劣" class="headerlink" title="自增 id 有什么优劣"></a>自增 id 有什么优劣</h3><p>优： </p>
+<ul>
+<li>占用空间小</li>
+<li>生成有规律</li>
+<li>可以排序</li>
+<li>实现简单，不需要依赖系统</li>
+</ul>
+<p>劣：</p>
+<ul>
+<li>只能保证当前运行时的唯一</li>
+</ul>
+<p>基于以上分析， 最后选择了自增 id 来实现一个 Unique Token</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><p>自增 id 的 UToken 就很简单了， 直接给一个初始值 0 ，然后每次调用自增 1。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> UToken &#123;</span><br><span class="line">  current = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.current</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  valueOf() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.current</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  next() &#123;</span><br><span class="line">    <span class="keyword">return</span> ++<span class="keyword">this</span>.current</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> utoken = <span class="keyword">new</span> UToken()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(utoken) <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">console</span>.log(utoken.next()) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(utoken) <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<p>功能是实现了， 但是运行时间过长，数值不断的变大，某一时刻肯定会超过 <code>Number.MAX_SAFE_INTEGER</code>， 在之后就会出现重复值。 这个 UToken 就会失效。<br>这就跟大数计算（收精度限制）碰到的问题一样一样的。</p>
+<h4 id="如何解决精度限制问题"><a href="#如何解决精度限制问题" class="headerlink" title="如何解决精度限制问题"></a>如何解决精度限制问题</h4><p>将 number 拆分为数组存储，然后运算时递增，数组每一个单位值不超过 <code>Number.MAX_SAFE_INTEGER</code>，输出是将数组拼接成字符串输出</p>
+<p>在本文中，我们会以链表的方式实现。<br>链表的每一个节点记录了当前节点的值，上级一节点/下一节点的引用，以及相关方法</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> TokenNode &#123;</span><br><span class="line">  <span class="comment">// 该节点的字符串值模板，让 TokenNode 不直接返回数字</span></span><br><span class="line">  <span class="comment">// 比如说 current = 1 =&gt; 对应的字符串为 B</span></span><br><span class="line">  <span class="keyword">static</span> template = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'</span></span><br><span class="line"></span><br><span class="line">  current = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 前一个节点的引用</span></span><br><span class="line">  prevNode: TokenNode</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 下一个节点的引用</span></span><br><span class="line">  nextNode: TokenNode</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 节点类型</span></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> <span class="keyword">type</span>?: <span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 节点自增</span></span><br><span class="line"><span class="comment">   * 如果增加后当前值大于模板长度，则前一个节点自增， 当前节点置0</span></span><br><span class="line"><span class="comment">   * 如果没有前置节点，则新建一个节点作为前置节点</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  add() &#123;</span><br><span class="line">    <span class="keyword">const</span> ret = <span class="keyword">this</span>.current + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ret &gt; TokenNode.template.length - <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.prevNode) &#123;</span><br><span class="line">        <span class="keyword">this</span>.prevNode.add()</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.prevNode = <span class="keyword">new</span> TokenNode(<span class="keyword">this</span>.type)</span><br><span class="line">        <span class="keyword">this</span>.prevNode.nextNode = <span class="keyword">this</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">this</span>.current = <span class="number">0</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.current = ret</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取末端 tokenNode</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> getLatestNode(): TokenNode &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.nextNode) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.getLatestNode()</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 整个 tokenNode 链自增， 及获取末端节点自增</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  fullAdd() &#123;</span><br><span class="line">    <span class="keyword">const</span> latestNode = <span class="keyword">this</span>.getLatestNode()</span><br><span class="line">    latestNode.add()</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.getFullTokens()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取当前 tokenNode 的字符串表示</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getToken() &#123;</span><br><span class="line">    <span class="keyword">return</span> TokenNode.template[<span class="keyword">this</span>.current]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取前置所有 tokenNode 的字符串表示</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getPrevTokens(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.prevNode) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.prevNode.getPrevTokens()&#125;</span><span class="subst">$&#123;<span class="keyword">this</span>.prevNode.getToken()&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取后置所有 tokenNode 字符串表示</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getNextTokens(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.nextNode) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.nextNode.getToken()&#125;</span><span class="subst">$&#123;<span class="keyword">this</span>.nextNode.getNextTokens()&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取整个 tokenNode 链的字符串表示</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getFullTokens() &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.type === <span class="literal">null</span> || <span class="keyword">this</span>.type === <span class="literal">undefined</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.getPrevTokens()&#125;</span><span class="subst">$&#123;<span class="keyword">this</span>.getToken()&#125;</span><span class="subst">$&#123;<span class="keyword">this</span>.getNextTokens()&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.<span class="keyword">type</span>&#125;</span>__<span class="subst">$&#123;<span class="keyword">this</span>.getPrevTokens()&#125;</span><span class="subst">$&#123;<span class="keyword">this</span>.getToken()&#125;</span><span class="subst">$&#123;<span class="keyword">this</span>.getNextTokens()&#125;</span>`</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Token &#123;</span><br><span class="line">  <span class="keyword">private</span> current: TokenNode</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> <span class="keyword">type</span>?: <span class="built_in">string</span>, <span class="keyword">private</span> prefix: <span class="built_in">string</span> = '', <span class="keyword">private</span> suffix: <span class="built_in">string</span> = ''</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.current = <span class="keyword">new</span> TokenNode(<span class="keyword">this</span>.type)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> toString() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.prefix&#125;</span>_<span class="subst">$&#123;<span class="keyword">this</span>.current.getFullTokens()&#125;</span>_<span class="subst">$&#123;<span class="keyword">this</span>.suffix&#125;</span>`</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> valueOf() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.toString()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * genereate a token string</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  generate() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.current.fullAdd()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以生成一个满足条件的 Unique Token</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// test</span></span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  Token</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'@nannanbug/unique-token'</span></span><br><span class="line"></span><br><span class="line">describe(<span class="string">'utils/token'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> token: Token | <span class="literal">undefined</span></span><br><span class="line">  beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    token = <span class="keyword">new</span> Token()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  afterAll(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    token = <span class="literal">undefined</span></span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  test(<span class="string">'new Token'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    expect(<span class="string">`<span class="subst">$&#123;token&#125;</span>`</span>).toBe(<span class="string">'_A_'</span>)</span><br><span class="line"></span><br><span class="line">    token?.generate()</span><br><span class="line">    expect(<span class="string">`<span class="subst">$&#123;token&#125;</span>`</span>).toBe(<span class="string">'_B_'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">300</span>; i++) &#123;</span><br><span class="line">      token?.generate()</span><br><span class="line">    &#125;</span><br><span class="line">    expect(<span class="string">`<span class="subst">$&#123;token&#125;</span>`</span>).toBe(<span class="string">'_Ep_'</span>)</span><br><span class="line"></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实际使用</span></span><br><span class="line"><span class="keyword">import</span> &#123; Token &#125; <span class="keyword">from</span> <span class="string">'@nananbug/unique-token'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> VNodeID = <span class="keyword">new</span> Token(<span class="string">'vnode'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> VNodeView = &#123;</span><br><span class="line">  id: <span class="string">`<span class="subst">$&#123;VNodeID&#125;</span>`</span>,</span><br><span class="line">  <span class="keyword">type</span>: <span class="string">'View'</span>,</span><br><span class="line">  props: &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//   id: '_vnode__A_',</span></span><br><span class="line"><span class="comment">//   type: 'View',</span></span><br><span class="line"><span class="comment">//   props: &#123;&#125;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">VNodeID.generate()</span><br><span class="line"><span class="keyword">const</span> VNodeImage = &#123;</span><br><span class="line">  id: <span class="string">`<span class="subst">$&#123;VNodeID&#125;</span>`</span>,</span><br><span class="line">  <span class="keyword">type</span>: <span class="string">'Image'</span>,</span><br><span class="line">  props: &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//   id: '_vnode__B_',</span></span><br><span class="line"><span class="comment">//   type: 'Image',</span></span><br><span class="line"><span class="comment">//   props: &#123;&#125;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>相应的包可查看 <a href="https://github.com/looading/unique-token" target="_blank" rel="noopener">@nannanbug/unique-token</a></p>
+<p>End of the battle</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://lake.ctyloading.cn" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 qisang</li>
+      <li><a href="http://lake.ctyloading.cn">Home</a></li>
+      
+      <li><a href="https://github.com/looading" target="_blank" rel="noopener">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica" target="_blank" rel="noopener">Replica</a>
+      by <a href="//github.com/sabrinaluo" target="_blank" rel="noopener">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
