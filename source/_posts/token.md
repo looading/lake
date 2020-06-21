@@ -83,6 +83,8 @@ connection.onMessage((message) => {
 ## 实现方法
 自增 id 的 UToken 就很简单了， 直接给一个初始值 0 ，然后每次调用自增 1。
 
+![图](http://ww1.sinaimg.cn/large/a6d1f995ly1gg01jwhye1j21g90yhwig.jpg)
+
 ```typescript
 class UToken {
   current = 0
